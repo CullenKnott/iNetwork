@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
-const moment = require('moment');
+const moment = require("moment");
 
+// ReactionSchema must come first because of order of operations so that it can be references by ThoughtSchema
 const ReactionSchema = new Schema(
   {
     reactionId: {
@@ -32,6 +33,7 @@ const ReactionSchema = new Schema(
   }
 );
 
+// ThoughtSchema
 const ThoughtSchema = new Schema(
   {
     thoughtText: {
@@ -61,10 +63,10 @@ const ThoughtSchema = new Schema(
   }
 );
 
-thoughtSchema.virtual('reactionCount').get(function () {
-    return this.reactions.length
+thoughtSchema.virtual("reactionCount").get(function () {
+  return this.reactions.length;
 });
 
-const Thought = model('Thought', ThoughtSchema);
+const Thought = model("Thought", ThoughtSchema);
 
 module.exports = Thought;
