@@ -14,9 +14,7 @@ module.exports = {
   // get a single user by id
   async getSingleUser(req, res) {
     try {
-      const user = await User.findOne({ _id: req.params.userId }).select(
-        "-__v"
-      );
+      const user = await User.findOne({ _id: req.params.id }).select("-__v");
 
       if (!user) {
         return res.status(404).json({ message: "No user with that ID found" });
@@ -41,7 +39,7 @@ module.exports = {
   // delete a user
   async deleteUser(req, res) {
     try {
-      const user = await User.findOneAndDelete({ _id: req.params.userId });
+      const user = await User.findOneAndDelete({ _id: req.params.id });
 
       if (!user) {
         return res.status(404).json({ message: "No user with that ID found" });
@@ -58,7 +56,7 @@ module.exports = {
   async updateUser(req, res) {
     try {
       const user = await User.findOneAndUpdate(
-        { _id: req.params.userId },
+        { _id: req.params.id },
         { $set: req.body },
         { runValidators: true, new: true }
       );
@@ -78,7 +76,7 @@ module.exports = {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { friends: params.friendId } },
+        { $addToSet: { friends: req.params.friendId } },
         { runValidators: true, new: true }
       );
 
@@ -97,7 +95,7 @@ module.exports = {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friends: params.friendId } },
+        { $pull: { friends: req.params.friendId } },
         { runValidators: true, new: true }
       );
 
@@ -105,7 +103,7 @@ module.exports = {
         return res.status(404).json({ message: "No user with that ID found" });
       }
 
-      res.json(user);
+      res.json({ message: "reaction has been deleted!"});
     } catch (err) {
       res.status(500).json(err);
     }
